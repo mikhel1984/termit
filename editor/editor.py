@@ -22,6 +22,8 @@ class Editor:
 
   def __init__(self, root, ver):
     self.root = root
+    self.root.rowconfigure(1, weight=1)
+    self.root.columnconfigure(0, weight=1)
     self.version = ver
     # symbolical operations
     self.sym = Sym()
@@ -29,10 +31,12 @@ class Editor:
     self.sym.powXOR(INIT_POW)
     # editor
     self.editor = tk.Frame(root, width=600, height=400)
-    self.editor.grid(row=1, column=0, sticky='nsew')
+    self.editor.rowconfigure(0, weight=1)
+    self.editor.columnconfigure(0, weight=1)
+    self.editor.grid(row=1, column=0, sticky='news')
     self.textEditor(self.editor)
     # bar
-    self.bar = tk.Frame(root) 
+    self.bar = tk.Frame(root)
     self.bar.grid(row=0, column=0, sticky='we') 
     self.menuFile(self.bar)
     self.menuEdit(self.bar)
@@ -44,7 +48,7 @@ class Editor:
     # status
     self.statusVar = tk.StringVar()
     self.status = tk.Label(root, textvariable=self.statusVar, bg=COLOR_NORM, relief='sunken')
-    self.status.grid(row=2, column=0, sticky='nsew')
+    self.status.grid(row=2, column=0, sticky='ew')
     # evaluate
     self.editor_name = 'TermIt v.0.0'
     self.text.focus_set()
