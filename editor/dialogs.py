@@ -89,3 +89,46 @@ class ReplaceDlg(tk.simpledialog.Dialog):
     self.bind('<Return>', lambda ev: self.on_ok)
     self.bind('<Escape>', lambda ev: self.on_cancel)
 
+class GetParams(tk.simpledialog.Dialog):
+  """Create dialog to get parameters"""
+  
+  def __init__(self, parent, title, tips, defaults=['','']):
+    self.tips = tips
+    self.defaults = defaults
+    self.pressok = True
+    super().__init__(parent, title)
+
+  def body(self, frame):
+    """Window structure"""
+    self.var1 = tk.StringVar(value=self.defaults[0])
+    self.var2 = tk.StringVar(value=self.defaults[1])
+    lbl1 = tk.Label(frame, text=self.tips[0])
+    lbl1.pack()
+    ent1 = tk.Entry(frame, textvariable=self.var1, width=20)
+    ent1.pack()
+    if len(self.tips > 1):
+      lbl2 = tk.Label(frame, text=self.tips[1])
+      lbl2.pack()
+      ent2 = tk.Entry(frame, textvariable=self.var2, width=20)
+      end2.pack()
+
+  def on_ok(self):
+    """Button 'OK' action"""
+    self.v1 = self.var1.get()
+    self.v2 = self.var2.get()
+    self.destroy()
+
+  def on_cancel(self):
+    """Button 'Cancel' action"""
+    self.pressok = False
+    self.destroy()
+
+  def buttonbox(self):
+    """Buttons and bindings"""
+    btn_ok = tk.Button(self, text='OK', width=5, command=self.on_ok)
+    btn_ok.pack(side='left')
+    btn_cancel = tk.Button(self, text='Cancel', width=5, command=self.on_cancel)
+    btn_cancel.pack(side='right')
+    self.bind('<Return>', lambda ev: self.on_ok)
+    self.bind('<Escape>', lambda ev: self.on_cancel)
+
