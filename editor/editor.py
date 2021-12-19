@@ -31,6 +31,8 @@ class Editor:
     self.menuEdit(self.bar)
     self.menuSearch(self.bar)
     self.menuSympy(self.bar)
+    self.c_menu = self.createSympyMenu(self.text)
+    self.text.bind('<ButtonRelease-3>', self.callContext)
     # status
     self.statusVar = tk.StringVar()
     self.status = tk.Label(root, textvariable=self.statusVar, bg=COLOR_NORM, relief='sunken')
@@ -88,7 +90,11 @@ class Editor:
     """Define elements of the 'Simpy' menu"""
     btn = tk.Menubutton(frame, text='Sympy', underline=0)
     btn.grid(row=0, column=3, sticky='w')
-    menu = tk.Menu(btn, tearoff=0)
+    btn.configure(menu=self.createSympyMenu(btn))
+
+  def createSympyMenu(self, frame):
+    """List of symbolical operations"""
+    menu = tk.Menu(frame, tearoff=0)
     # base operations
     basemenu = tk.Menu(menu, tearoff=0)
     basemenu.add_command(label='Expand', command=lambda: self.symExpand(1))
@@ -117,7 +123,7 @@ class Editor:
     setmenu.add_checkbutton(label='Power as ^', variable=self.cb_pow, onvalue=True,
         offvalue=False, command=lambda: self.sym.powXOR(self.cb_pow.get()))
     menu.add_cascade(label='Settings..', menu=setmenu)
-    btn.configure(menu=menu)
+    return menu
 
   def textEditor(self, frame):
     """Create text editor widget"""
@@ -231,6 +237,10 @@ class Editor:
           i_from = '% s+% dc' % (i_from, len(dlg.replace))
         else:
           break
+  
+  def callContext(self, ev):
+    """Call context menu"""
+    self.c_menu.post(ev.x_root, ev.y_root)
 
   def INFO(self, msg):
     """Update status label in normal mode"""
