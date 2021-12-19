@@ -1,6 +1,7 @@
 
 import tkinter as tk
 import tkinter.filedialog as filedialog
+import tkinter.messagebox as messagebox
 import hashlib
 
 from .dialogs import FindDlg, ReplaceDlg
@@ -11,11 +12,17 @@ COLOR_WARN = 'yellow'
 INIT_POW   = True
 INIT_EVAL  = False
 
+ABOUT = \
+"TermIt v %s\n\n\
+Notepad for equations.\n\n\
+https://github.com/mikhel1984/termit"
+
 class Editor:
   """Create the main window"""
 
-  def __init__(self, root):
+  def __init__(self, root, ver):
     self.root = root
+    self.version = ver
     # symbolical operations
     self.sym = Sym()
     self.sym.simpParse(INIT_EVAL)
@@ -31,6 +38,7 @@ class Editor:
     self.menuEdit(self.bar)
     self.menuSearch(self.bar)
     self.menuSympy(self.bar)
+    self.menuHelp(self.bar)
     self.c_menu = self.createSympyMenu(self.text)
     self.text.bind('<ButtonRelease-3>', self.callContext)
     # status
@@ -124,6 +132,14 @@ class Editor:
         offvalue=False, command=lambda: self.sym.powXOR(self.cb_pow.get()))
     menu.add_cascade(label='Settings..', menu=setmenu)
     return menu
+
+  def menuHelp(self, frame):
+    btn = tk.Menubutton(frame, text='Help', underline=0)
+    btn.grid(row=0, column=4, sticky='w')
+    menu = tk.Menu(btn, tearoff=0)
+    menu.add_command(label='About', 
+      command=lambda: messagebox.showinfo("About", ABOUT % (self.version,)))
+    btn.configure(menu=menu)
 
   def textEditor(self, frame):
     """Create text editor widget"""
