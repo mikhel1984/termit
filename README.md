@@ -1,2 +1,2 @@
-# termit
+# TermIt
 Notepad for symbolical manipulations
