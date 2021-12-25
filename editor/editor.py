@@ -112,7 +112,10 @@ class Editor:
     basemenu.add_command(label='Expand', command=lambda: self._call(self.sym.expand))
     basemenu.add_command(label='Factor', command=lambda: self._call(self.sym.factor))
     basemenu.add_command(label='Simplify', command=lambda: self._call(self.sym.simplify))
-    basemenu.add_command(label='Collect..', command=lambda: self._call_arg(self.sym.collect))
+    basemenu.add_command(label='Collect..', 
+      command=lambda: self._call_arg(self.sym.collect, "Collect", ("for var",)))
+    basemenu.add_command(label='Subs..', 
+      command=lambda: self._call_arg2(self.sym.subs, 'Substitute', ('var','with')))
     menu.add_cascade(label='Base..', menu=basemenu)
     # rational
     ratmenu = tk.Menu(menu, tearoff=0)
@@ -132,8 +135,8 @@ class Editor:
     menu.add_cascade(label='Trig..', menu=trigmenu)
     # logarithm
     logmenu = tk.Menu(menu, tearoff=0)
-    logmenu = add_command(label='Expand', command=lambda: self._call(self.sym.logExpand))
-    logmenu = add_command(label='Combine', command=lambda: self._call(self.sym.logCombine))
+    logmenu.add_command(label='Expand', command=lambda: self._call(self.sym.logExpand))
+    logmenu.add_command(label='Combine', command=lambda: self._call(self.sym.logCombine))
     menu.add_cascade(label='Log..', menu=logmenu)
     # settings
     setmenu = tk.Menu(menu, tearoff=0)
@@ -298,14 +301,14 @@ class Editor:
     else:
       self.WARN(snext)
 
-  def _call_arg(self,fn):
+  def _call_arg(self,fn,title,tips,init=('','')):
     rng = self.text.tag_ranges('sel')
     if not rng:
       # whole line
       rng = (self.text.index('insert linestart'), self.text.index('insert lineend'))
     s = self.text.get(*rng)
     # call dialog
-    par = GetParams(self.root, "Collect", ('for var.',))
+    par = GetParams(self.root, title, tips, init)
     if not (par.pressok and par.v1):
       return
     # execute 
@@ -317,3 +320,21 @@ class Editor:
     else:
       self.WARN(snext)
 
+  def _call_arg2(self,fn, title, tips, init=('','')):
+    rng = self.text.tag_ranges('sel')
+    if not rng:
+      # whole line
+      rng = (self.text.index('insert linestart'), self.text.index('insert lineend'))
+    s = self.text.get(*rng)
+    # call dialog
+    par = GetParams(self.root, title, tips, init)
+    if not (par.pressok and par.v1 and par.v2):
+      return
+    # execute 
+    ok, snext = fn(s, par.v1, par.v2)
+    if ok:
+      self.text.delete(*rng)
+      self.text.insert(rng[0], snext+' ')  # fix it
+      self.INFO("Done!")
+    else:
+      self.WARN(snext)

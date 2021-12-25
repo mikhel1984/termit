@@ -11,9 +11,7 @@ class Sym:
     self._xor = True
     self._simp = False
 
-  #===========================
-  #        properties 
-  #===========================
+  # ====== properties ========
 
   def simpParse(self,use):
     self._simp = use
@@ -25,9 +23,7 @@ class Sym:
     else:    # symbol **
       self._transform = standard_transformations
 
-  #==========================
-  #        internal
-  #==========================
+  # ====== internal ========
 
   def _parse(self, s):
     try:
@@ -54,6 +50,13 @@ class Sym:
     if not ok:
       return False, res
     expr = fn(res, arg)
+    return True, self._toString(expr)
+
+  def subs(self, s, a, b):
+    ok, res = self._parse(s)
+    if not ok:
+      return False, res
+    expr = res.subs(a,b)
     return True, self._toString(expr)
 
   # ======= base ===========
