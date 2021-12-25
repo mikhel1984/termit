@@ -109,21 +109,22 @@ class Editor:
     menu = tk.Menu(frame, tearoff=0)
     # base operations
     basemenu = tk.Menu(menu, tearoff=0)
-    basemenu.add_command(label='Expand', command=lambda: self.symExpand(1))
-    basemenu.add_command(label='Factor', command=lambda: self.symFactor(1))
-    basemenu.add_command(label='Simplify', command=lambda: self.symSimplify(1))
-    basemenu.add_command(label='Collect..', command=lambda: self.symCollect(1))
+    basemenu.add_command(label='Expand', command=lambda: self._call(self.sym.expand))
+    basemenu.add_command(label='Factor', command=lambda: self._call(self.sym.factor))
+    basemenu.add_command(label='Simplify', command=lambda: self._call(self.sym.simplify))
+    basemenu.add_command(label='Collect..', command=lambda: self._call_arg(self.sym.collect))
+    basemenu.add_command(label='Cancel', command=lambda: self._call(self.sym.cancel))
     menu.add_cascade(label='Base..', menu=basemenu)
     # power
     powmenu = tk.Menu(menu, tearoff=0)
-    powmenu.add_command(label='Expand Exp', command=lambda: self.symPowExpandExp(1))
-    powmenu.add_command(label='Expand Base', command=lambda: self.symPowExpandBase(1))
-    powmenu.add_command(label='Simplify', command=lambda: self.symPowSimplify(1))
+    powmenu.add_command(label='Expand Exp', command=lambda: self._call(self.sym.powExpandExp))
+    powmenu.add_command(label='Expand Base', command=lambda: self._call(self.sym.powExpandBase))
+    powmenu.add_command(label='Simplify', command=lambda: self._call(self.sym.powSimp))
     menu.add_cascade(label='Power..', menu=powmenu)
     # trigonometry
     trigmenu = tk.Menu(menu, tearoff=0)
-    trigmenu.add_command(label='Expand', command=lambda: self.symTrigExpand(1))
-    trigmenu.add_command(label='Simplify', command=lambda: self.symTrigSimp(1))
+    trigmenu.add_command(label='Expand', command=lambda: self._call(self.sym.trigExpand))
+    trigmenu.add_command(label='Simplify', command=lambda: self._call(self.sym.trigSimp))
     menu.add_cascade(label='Trig..', menu=trigmenu)
     # settings
     setmenu = tk.Menu(menu, tearoff=0)
@@ -307,29 +308,3 @@ class Editor:
     else:
       self.WARN(snext)
 
-  def symExpand(self, ev):
-    return self._call(self.sym.expand)
-
-  def symFactor(self, ev):
-    return self._call(self.sym.factor)
-
-  def symSimplify(self, ev):
-    return self._call(self.sym.simplify)
-
-  def symCollect(self, ev):
-    return self._call_arg(self.sym.collect)
-
-  def symPowExpandExp(self, ev):
-    return self._call(self.sym.powExpandExp)
-
-  def symPowExpandBase(self, ev):
-    return self._call(self.sym.powExpandBase)
-
-  def symPowSimplify(self, ev):
-    return self._call(self.sym.powSimp)
-
-  def symTrigExpand(self, ev):
-    return self._call(self.sym.trigExpand)
-
-  def symTrigSimp(self, ev):
-    return self._call(self.sym.trigSimp)
