@@ -56,9 +56,7 @@ class Sym:
     expr = fn(res, arg)
     return True, self._toString(expr)
 
-  #==========================
-  #          base
-  #==========================
+  # ======= base ===========
 
   def expand(self,s):
     return self._eval(s, sympy.expand)
@@ -69,15 +67,10 @@ class Sym:
   def simplify(self,s):
     return self._eval(s, sympy.simplify)
 
-  def cancel(self,s):
-    return self._eval(s, sympy.cancel)
-
   def collect(self, s, arg):
     return self._eval_arg(s, sympy.collect, arg)
 
-  #==========================
-  #      trigonometry 
-  #==========================
+  # ===== trigonometry ======
 
   def trigExpand(self,s):
     return self._eval(s, sympy.expand_trig)
@@ -85,9 +78,7 @@ class Sym:
   def trigSimp(self,s):
     return self._eval(s, sympy.trigsimp)
 
-  #==========================
-  #        power 
-  #==========================
+  # ======= power ===========
 
   def powExpandExp(self,s):
     return self._eval(s, sympy.expand_power_exp)
@@ -97,3 +88,19 @@ class Sym:
 
   def powSimp(self, s):
     return self._eval(s, sympy.powsimp)
+
+  # ===== rational ==========
+
+  def cancel(self,s):
+    return self._eval(s, sympy.cancel)
+
+  def apart(self,s):
+    return self._eval(s, sympy.apart)
+
+  # ==== logarithm ==========
+
+  def logExpand(self,s):
+    return self._eval(s, sympy.expand_log)
+
+  def logCombine(self,s):
+    return self._eval(s, symb.logcombine)

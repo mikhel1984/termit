@@ -113,8 +113,12 @@ class Editor:
     basemenu.add_command(label='Factor', command=lambda: self._call(self.sym.factor))
     basemenu.add_command(label='Simplify', command=lambda: self._call(self.sym.simplify))
     basemenu.add_command(label='Collect..', command=lambda: self._call_arg(self.sym.collect))
-    basemenu.add_command(label='Cancel', command=lambda: self._call(self.sym.cancel))
     menu.add_cascade(label='Base..', menu=basemenu)
+    # rational
+    ratmenu = tk.Menu(menu, tearoff=0)
+    ratmenu.add_command(label='Cancel', command=lambda: self._call(self.sym.cancel))
+    ratmenu.add_command(label='Apart', command=lambda: self._call(self.sym.apart))
+    menu.add_cascade(label="Ratio..", menu=ratmenu)
     # power
     powmenu = tk.Menu(menu, tearoff=0)
     powmenu.add_command(label='Expand Exp', command=lambda: self._call(self.sym.powExpandExp))
@@ -126,6 +130,11 @@ class Editor:
     trigmenu.add_command(label='Expand', command=lambda: self._call(self.sym.trigExpand))
     trigmenu.add_command(label='Simplify', command=lambda: self._call(self.sym.trigSimp))
     menu.add_cascade(label='Trig..', menu=trigmenu)
+    # logarithm
+    logmenu = tk.Menu(menu, tearoff=0)
+    logmenu = add_command(label='Expand', command=lambda: self._call(self.sym.logExpand))
+    logmenu = add_command(label='Combine', command=lambda: self._call(self.sym.logCombine))
+    menu.add_cascade(label='Log..', menu=logmenu)
     # settings
     setmenu = tk.Menu(menu, tearoff=0)
     self.cb_eval = tk.BooleanVar()
