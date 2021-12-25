@@ -4,7 +4,7 @@ import tkinter.filedialog as filedialog
 import tkinter.messagebox as messagebox
 import hashlib
 
-from .dialogs import FindDlg, ReplaceDlg
+from .dialogs import FindDlg, ReplaceDlg, GetParams
 from .symbolic import Sym
 
 COLOR_NORM = 'white'
@@ -112,6 +112,7 @@ class Editor:
     basemenu.add_command(label='Expand', command=lambda: self.symExpand(1))
     basemenu.add_command(label='Factor', command=lambda: self.symFactor(1))
     basemenu.add_command(label='Simplify', command=lambda: self.symSimplify(1))
+    basemenu.add_command(label='Collect..', command=lambda: self.symCollect(1))
     menu.add_cascade(label='Base..', menu=basemenu)
     # power
     powmenu = tk.Menu(menu, tearoff=0)
@@ -287,6 +288,25 @@ class Editor:
     else:
       self.WARN(snext)
 
+  def _call_arg(self,fn):
+    rng = self.text.tag_ranges('sel')
+    if not rng:
+      # whole line
+      rng = (self.text.index('insert linestart'), self.text.index('insert lineend'))
+    s = self.text.get(*rng)
+    # call dialog
+    par = GetParams(self.root, "Collect", ('for var.',))
+    if not (par.pressok and par.v1):
+      return
+    # execute 
+    ok, snext = fn(s, par.v1)
+    if ok:
+      self.text.delete(*rng)
+      self.text.insert(rng[0], snext+' ')  # fix it
+      self.INFO("Done!")
+    else:
+      self.WARN(snext)
+
   def symExpand(self, ev):
     return self._call(self.sym.expand)
 
@@ -295,6 +315,9 @@ class Editor:
 
   def symSimplify(self, ev):
     return self._call(self.sym.simplify)
+
+  def symCollect(self, ev):
+    return self._call_arg(self.sym.collect)
 
   def symPowExpandExp(self, ev):
     return self._call(self.sym.powExpandExp)

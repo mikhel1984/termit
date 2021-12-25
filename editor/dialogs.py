@@ -92,7 +92,7 @@ class ReplaceDlg(tk.simpledialog.Dialog):
 class GetParams(tk.simpledialog.Dialog):
   """Create dialog to get parameters"""
   
-  def __init__(self, parent, title, tips, defaults=['','']):
+  def __init__(self, parent, title, tips, defaults=('','')):
     self.tips = tips
     self.defaults = defaults
     self.pressok = True
@@ -104,12 +104,12 @@ class GetParams(tk.simpledialog.Dialog):
     self.var2 = tk.StringVar(value=self.defaults[1])
     lbl1 = tk.Label(frame, text=self.tips[0])
     lbl1.pack()
-    ent1 = tk.Entry(frame, textvariable=self.var1, width=20)
+    ent1 = tk.Entry(frame, textvariable=self.var1, width=18)
     ent1.pack()
-    if len(self.tips > 1):
+    if len(self.tips) > 1:
       lbl2 = tk.Label(frame, text=self.tips[1])
       lbl2.pack()
-      ent2 = tk.Entry(frame, textvariable=self.var2, width=20)
+      ent2 = tk.Entry(frame, textvariable=self.var2, width=18)
       end2.pack()
 
   def on_ok(self):

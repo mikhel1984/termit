@@ -49,6 +49,13 @@ class Sym:
     expr = fn(res)
     return True, self._toString(expr)
 
+  def _eval_arg(self, s, fn, arg):
+    ok, res = self._parse(s)
+    if not ok:
+      return False, res
+    expr = fn(res, arg)
+    return True, self._toString(expr)
+
   #==========================
   #          base
   #==========================
@@ -61,6 +68,9 @@ class Sym:
 
   def simplify(self,s):
     return self._eval(s, sympy.simplify)
+
+  def collect(self, s, arg):
+    return self._eval_arg(s, sympy.collect, arg)
 
   #==========================
   #      trigonometry 
@@ -84,5 +94,3 @@ class Sym:
 
   def powSimp(self, s):
     return self._eval(s, sympy.powsimp)
-#sym = Sym()
-#print(sym.expand('a*(b+c)'))
