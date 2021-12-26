@@ -117,6 +117,10 @@ class Sym:
   def powSimp(self, s):
     """Simplify expression with powers"""
     return self._eval(s, sympy.powsimp)
+  
+  def powDenest(self, s):
+    """Simplify nested powers"""
+    return self._eval(s, sympy.powdenest)
 
   # ===== rational ==========
 

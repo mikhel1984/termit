@@ -129,6 +129,7 @@ class Editor:
     powmenu.add_command(label='Expand Exp', command=lambda: self._call(self.sym.powExpandExp))
     powmenu.add_command(label='Expand Base', command=lambda: self._call(self.sym.powExpandBase))
     powmenu.add_command(label='Simplify', command=lambda: self._call(self.sym.powSimp))
+    powmenu.add_command(label='Denest', command=lambda: self._call(self.sym.powDenest))
     menu.add_cascade(label='Power..', menu=powmenu)
     # trigonometry
     trigmenu = tk.Menu(menu, tearoff=0)
