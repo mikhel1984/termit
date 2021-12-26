@@ -59,6 +59,13 @@ class Sym:
     expr = res.subs(a,b)
     return True, self._toString(expr)
 
+  def evalf(self, s):
+    ok, res = self._parse(s)
+    if not ok:
+      return False, res
+    expr = res.evalf()
+    return True, self._toString(expr)
+
   # ======= base ===========
 
   def expand(self,s):

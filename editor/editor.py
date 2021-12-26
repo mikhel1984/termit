@@ -116,6 +116,7 @@ class Editor:
       command=lambda: self._call_arg(self.sym.collect, "Collect", ("for var",)))
     basemenu.add_command(label='Subs..', 
       command=lambda: self._call_arg2(self.sym.subs, 'Substitute', ('var','with')))
+    basemenu.add_command(label='Evalf', command=lambda: self._call(self.sym.evalf))
     menu.add_cascade(label='Base..', menu=basemenu)
     # rational
     ratmenu = tk.Menu(menu, tearoff=0)
@@ -296,7 +297,7 @@ class Editor:
     ok, snext = fn(s)
     if ok:
       self.text.delete(*rng)
-      self.text.insert(rng[0], snext+' ')  # fix it
+      self.text.insert(rng[0], snext) 
       self.INFO("Done!")
     else:
       self.WARN(snext)
@@ -315,7 +316,7 @@ class Editor:
     ok, snext = fn(s, par.v1)
     if ok:
       self.text.delete(*rng)
-      self.text.insert(rng[0], snext+' ')  # fix it
+      self.text.insert(rng[0], snext) 
       self.INFO("Done!")
     else:
       self.WARN(snext)
@@ -334,7 +335,7 @@ class Editor:
     ok, snext = fn(s, par.v1, par.v2)
     if ok:
       self.text.delete(*rng)
-      self.text.insert(rng[0], snext+' ')  # fix it
+      self.text.insert(rng[0], snext) 
       self.INFO("Done!")
     else:
       self.WARN(snext)
