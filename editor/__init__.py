@@ -1,3 +1,3 @@
-# S.Mikhel, 2021
+# 2021, S.Mikhel
 
 from .editor import Editor

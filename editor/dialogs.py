@@ -1,3 +1,4 @@
+# Customised dialogs
 
 import tkinter as tk
 import tkinter.simpledialog 
@@ -90,7 +91,7 @@ class ReplaceDlg(tk.simpledialog.Dialog):
     self.bind('<Escape>', lambda ev: self.on_cancel)
 
 class GetParams(tk.simpledialog.Dialog):
-  """Create dialog to get parameters"""
+  """Create dialog to get 1 or 2 parameters"""
   
   def __init__(self, parent, title, tips, defaults=('','')):
     self.tips = tips

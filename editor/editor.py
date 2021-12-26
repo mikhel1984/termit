@@ -1,3 +1,4 @@
+# Main window, text editor functionality
 
 import tkinter as tk
 import tkinter.filedialog as filedialog
@@ -153,6 +154,7 @@ class Editor:
     return menu
 
   def menuHelp(self, frame):
+    """Define elements of the 'Help' menu"""
     btn = tk.Menubutton(frame, text='Help', underline=0)
     btn.grid(row=0, column=4, sticky='w')
     menu = tk.Menu(btn, tearoff=0)
@@ -288,6 +290,7 @@ class Editor:
     self.statusVar.set(msg)
 
   def _call(self,fn):
+    """Get the selected text and apply function"""
     rng = self.text.tag_ranges('sel')
     if not rng:
       # whole line
@@ -303,6 +306,7 @@ class Editor:
       self.WARN(snext)
 
   def _call_arg(self,fn,title,tips,init=('','')):
+    """Get the selected text, call menu for additional parameters and apply function"""
     rng = self.text.tag_ranges('sel')
     if not rng:
       # whole line
@@ -322,6 +326,7 @@ class Editor:
       self.WARN(snext)
 
   def _call_arg2(self,fn, title, tips, init=('','')):
+    """Get the selected text, call menu for 2 additional parameters and apply function"""
     rng = self.text.tag_ranges('sel')
     if not rng:
       # whole line

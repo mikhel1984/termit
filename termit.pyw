@@ -3,5 +3,4 @@
 from tkinter import Tk
 from editor import Editor
 
-root = Tk()
-Editor(root, "0.1.2")
+Editor(Tk(), "0.1.2")
