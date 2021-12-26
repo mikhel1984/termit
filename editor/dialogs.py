@@ -110,7 +110,7 @@ class GetParams(tk.simpledialog.Dialog):
       lbl2 = tk.Label(frame, text=self.tips[1])
       lbl2.pack()
       ent2 = tk.Entry(frame, textvariable=self.var2, width=18)
-      end2.pack()
+      ent2.pack()
 
   def on_ok(self):
     """Button 'OK' action"""

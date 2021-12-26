@@ -50,7 +50,7 @@ class Editor:
     self.status = tk.Label(root, textvariable=self.statusVar, bg=COLOR_NORM, relief='sunken')
     self.status.grid(row=2, column=0, sticky='ew')
     # evaluate
-    self.editor_name = 'TermIt v.0.0'
+    self.editor_name = 'TermIt v.'+ver
     self.text.focus_set()
     self.root.title(self.editor_name)
     self.root.mainloop()
