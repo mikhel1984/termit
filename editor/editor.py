@@ -16,7 +16,7 @@ INIT_EVAL  = False
 ABOUT = \
 "TermIt v %s\n\n\
 Notepad for equations.\n\n\
-github.com/mikhel1984/termit"
+Wiki:\ngithub.com/mikhel1984/termit/wiki"
 
 class Editor:
   """Create the main window"""

@@ -112,7 +112,7 @@ class Sym:
 
   def powExpandBase(self,s):
     """Expand power base"""
-    return self._eval(s, sympy.expand_power_base)
+    return self._eval(s, lambda x:sympy.expand_power_base(x,force=True))
 
   def powSimp(self, s):
     """Simplify expression with powers"""
@@ -136,4 +136,4 @@ class Sym:
 
   def logCombine(self,s):
     """Combine logarithm expression"""
-    return self._eval(s, symb.logcombine)
+    return self._eval(s, lambda x: sympy.logcombine(x,force=True))
