@@ -116,7 +116,7 @@ class Editor:
     basemenu.add_command(label='Collect..', 
       command=lambda: self._call_arg(self.sym.collect, "Collect", ("for var",)))
     basemenu.add_command(label='Subs..', 
-      command=lambda: self._call_arg2(self.sym.subs, 'Substitute', ('var','with')))
+      command=lambda: self._call_arg(self.sym.subs, 'Substitute', ('var','with')))
     basemenu.add_command(label='Evalf', command=lambda: self._call(self.sym.evalf))
     menu.add_cascade(label='Base..', menu=basemenu)
     # rational
@@ -313,11 +313,17 @@ class Editor:
       rng = (self.text.index('insert linestart'), self.text.index('insert lineend'))
     s = self.text.get(*rng)
     # call dialog
+    ok, snext = False, ""
     par = GetParams(self.root, title, tips, init)
-    if not (par.pressok and par.v1):
-      return
-    # execute 
-    ok, snext = fn(s, par.v1)
+    if len(tips) == 1: 
+      if not (par.pressok and par.v1): 
+        return
+      ok, snext = fn(s, par.v1)
+    else:      # len(tips) == 2
+      if not (par.pressok and par.v1 and par.v2):
+        return
+      ok, snext = fn(s, par.v1, par.v2)
+    # update text
     if ok:
       self.text.delete(*rng)
       self.text.insert(rng[0], snext) 
@@ -325,22 +331,3 @@ class Editor:
     else:
       self.WARN(snext)
 
-  def _call_arg2(self,fn, title, tips, init=('','')):
-    """Get the selected text, call menu for 2 additional parameters and apply function"""
-    rng = self.text.tag_ranges('sel')
-    if not rng:
-      # whole line
-      rng = (self.text.index('insert linestart'), self.text.index('insert lineend'))
-    s = self.text.get(*rng)
-    # call dialog
-    par = GetParams(self.root, title, tips, init)
-    if not (par.pressok and par.v1 and par.v2):
-      return
-    # execute 
-    ok, snext = fn(s, par.v1, par.v2)
-    if ok:
-      self.text.delete(*rng)
-      self.text.insert(rng[0], snext) 
-      self.INFO("Done!")
-    else:
-      self.WARN(snext)
