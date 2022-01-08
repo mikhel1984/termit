@@ -281,17 +281,27 @@ class Editor:
           break
 
   def _on_select(self, ev):
+    """Highlight selected text"""
     self.text.tag_remove(TAG_SEL, '1.0', 'end')
-    if self.text.tag_ranges('sel'):
+    rng = self.text.tag_ranges('sel')
+    if rng:
       sel = self.text.selection_get()
       # highlight similar text
       i_from = '1.0'
       while True:
         i_from = self.text.search(sel, i_from, stopindex='end') 
         if not i_from: break
+        if self.text.compare(i_from, '==', rng[0]):
+          # skip the selected text
+          i_from = '%s + %d c' % (i_from, len(sel))
+          continue
         i_to = "%s + %d c" % (i_from, len(sel))
         self.text.tag_add(TAG_SEL, i_from, i_to)
         i_from = '%s + %d c' % (i_from, len(sel))
+
+  def _sel_all(self, ev):
+    self.text.selection_clear()
+    self.text.tag_add('sel', '1.0', 'end')
   
   def callContext(self, ev):
     """Call context menu"""
