@@ -98,7 +98,10 @@ class Editor:
     menu.add_command(label='Cut (Ctrl+X)', command=lambda: self.text.event_generate('<<Cut>>'))
     menu.add_command(label='Copy (Ctrl+C)', command=lambda: self.text.event_generate('<<Copy>>'))
     menu.add_command(label='Paste (Ctrl+V)', command=lambda: self.text.event_generate('<<Paste>>'))
+    menu.add_separator()
+    menu.add_command(label='Select all (Ctrl+A)', command=lambda: self.selAll(1))
     btn.configure(menu=menu)
+    self.root.bind("<Control-a>", self.selAll)
 
   def menuSympy(self, frame):
     """Define elements of the 'Simpy' menu"""
@@ -299,7 +302,8 @@ class Editor:
         self.text.tag_add(TAG_SEL, i_from, i_to)
         i_from = '%s + %d c' % (i_from, len(sel))
 
-  def _sel_all(self, ev):
+  def selAll(self, ev):
+    """Selected all text"""
     self.text.selection_clear()
     self.text.tag_add('sel', '1.0', 'end')
   
