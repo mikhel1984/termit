@@ -12,6 +12,7 @@ COLOR_NORM = 'white'
 COLOR_WARN = 'yellow'
 INIT_POW   = True
 INIT_EVAL  = False
+TAG_SEL = 'selected'
 
 ABOUT = \
 "TermIt v %s\n\n\
@@ -173,6 +174,9 @@ class Editor:
     vscroll.grid(row=0, column=1, sticky='ns')
     hscroll.grid(row=1, column=0, sticky='ew')
     self.hashcode = self.getHash()
+    # tags 
+    self.text.tag_config(TAG_SEL, background="yellow")
+    self.text.bind('<<Selection>>', self._on_select)
 
   def getHash(self):
     """Find hash code for the text"""
@@ -266,15 +270,28 @@ class Editor:
         # find
         i_from = self.text.search(dlg.find, i_from, nocase=dlg.nocase)
         if not i_from: break
-        i_to = '% s+% dc' % (i_from, len(dlg.find))
+        i_to = '%s + %d c' % (i_from, len(dlg.find))
         # replace
         self.text.delete(i_from, i_to)
         self.text.insert(i_from, dlg.replace)
         # break if need
         if dlg.all:
-          i_from = '% s+% dc' % (i_from, len(dlg.replace))
+          i_from = '%s + %d c' % (i_from, len(dlg.replace))
         else:
           break
+
+  def _on_select(self, ev):
+    self.text.tag_remove(TAG_SEL, '1.0', 'end')
+    if self.text.tag_ranges('sel'):
+      sel = self.text.selection_get()
+      # highlight similar text
+      i_from = '1.0'
+      while True:
+        i_from = self.text.search(sel, i_from, stopindex='end') 
+        if not i_from: break
+        i_to = "%s + %d c" % (i_from, len(sel))
+        self.text.tag_add(TAG_SEL, i_from, i_to)
+        i_from = '%s + %d c' % (i_from, len(sel))
   
   def callContext(self, ev):
     """Call context menu"""
