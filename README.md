@@ -5,6 +5,7 @@
 ## How it works 
 
 In other to apply algebraic transformation select (highlight) the substring with expression and choose operation from the **Sympy** or the context menu. 
+If substring is not selected the whole current line is used.
 
 ## Dependencies 
 
