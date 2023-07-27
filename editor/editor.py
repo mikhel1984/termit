@@ -92,7 +92,6 @@ class Editor:
     self.text.bind("<Control-f>", self.searchFind)
     self.text.bind("<Control-g>", self.searchNext)
     self.text.bind("<Control-r>", self.searchFindReplace)
-    self.text.bind("<Control-w>", self.testBracket)
 
   def menuEdit(self, frame):
     """Define elements of the 'Edit' menu"""
@@ -294,7 +293,7 @@ class Editor:
           break
 
   def _onSelect(self, ev):
-    """Highlight selected text"""
+    """Highlight parts of text"""
     self.text.tag_remove(TAG_SEL, '1.0', 'end')
     rng = self.text.tag_ranges('sel')
     if rng:
@@ -304,8 +303,9 @@ class Editor:
         self._highlightBrackets(sel, self.text.index(rng[1]))
       else:
         self._highlightFound(sel, rng)
-  
+
   def _findPairBracket(self, br, ind):
+    """Find pair for the given bracket"""
     fwd = (br in ('(','[','{'))
     stop = 'end' if fwd else '1.0'
     increment = '+ 1c' if fwd else '- 1c'
@@ -322,12 +322,14 @@ class Editor:
     return ind, count
     
   def _highlightBrackets(self, br, pos):
+    """Show brackets"""
     pos2, cnt = self._findPairBracket(br, pos)
     if cnt == 0:
       self.text.tag_add(TAG_BR, pos+'- 1c', pos)
       self.text.tag_add(TAG_BR, pos2, pos2+'+ 1c')
       
   def _highlightFound(self, sel, rng):
+    """Show similar text"""
     i_from = '1.0'
     while True:
       i_from = self.text.search(sel, i_from, stopindex='end') 
@@ -339,13 +341,9 @@ class Editor:
       i_to = "%s + %d c" % (i_from, len(sel))
       self.text.tag_add(TAG_SEL, i_from, i_to)
       i_from = '%s + %d c' % (i_from, len(sel))
-    
-  def testBracket(self, ev):
-    i0 = self.text.index('insert')
-    print(self._findPairBracket(')', i0))
 
   def selAll(self, ev):
-    """Selected all text"""
+    """Select all text"""
     self.text.selection_clear()
     self.text.tag_add('sel', '1.0', 'end')
   
