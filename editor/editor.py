@@ -100,8 +100,10 @@ class Editor:
     menu.add_command(label='Paste (Ctrl+V)', command=lambda: self.text.event_generate('<<Paste>>'))
     menu.add_separator()
     menu.add_command(label='Select all (Ctrl+A)', command=lambda: self.selAll(1))
+    menu.add_command(label='Copy line (Ctrl+L)', command=lambda: self.copyLine(1))
     btn.configure(menu=menu)
     self.root.bind("<Control-a>", self.selAll)
+    self.root.bind("<Control-l>", self.copyLine)
 
   def menuSympy(self, frame):
     """Define elements of the 'Simpy' menu"""
@@ -362,4 +364,11 @@ class Editor:
       self.INFO("Done!")
     else:
       self.WARN(snext)
+  
+  def copyLine(self, ev):
+    """Copy and past current line"""
+    i_from = self.text.index('insert linestart')
+    rng = (i_from, self.text.index('insert lineend'))
+    s = self.text.get(*rng)
+    self.text.insert(i_from, s + '\n')
 
