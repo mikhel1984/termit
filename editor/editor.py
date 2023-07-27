@@ -14,6 +14,7 @@ INIT_POW   = True
 INIT_EVAL  = False
 TAG_SEL = 'selected'
 TAG_BR = 'bracket'
+TAG_NUM = 'number'
 
 ABOUT = \
 "TermIt v %s\n\n\
@@ -188,7 +189,9 @@ class Editor:
     # tags 
     self.text.tag_config(TAG_SEL, background="yellow")
     self.text.tag_config(TAG_BR, underline=True)
+    self.text.tag_config(TAG_NUM, foreground='blue')
     self.text.bind('<<Selection>>', self._onSelect)
+    self.text.bind('<KeyRelease>', self.checkNumber)
 
   def getHash(self):
     """Find hash code for the text"""
@@ -218,6 +221,7 @@ class Editor:
     self.text.insert('1.0', open(name, 'rt').read())
     self.root.title(name)
     self.hashcode = self.getHash()
+    self.checkRangeNumbers('1.0', 'end')
 
   def fileSaveAs(self, ev):
     """Command to save the text as a new file"""
@@ -402,11 +406,28 @@ class Editor:
       self.INFO("Done!")
     else:
       self.WARN(snext)
-  
+
   def copyLine(self, ev):
     """Copy and past current line"""
     i_from = self.text.index('insert linestart')
     rng = (i_from, self.text.index('insert lineend'))
     s = self.text.get(*rng)
     self.text.insert(i_from, s + '\n')
+    
+  def checkNumber(self, ev):
+    """Highlight numbers"""
+    # TODO check number in local region
+    i_beg = self.text.index('insert linestart')
+    i_end = self.text.index('insert lineend')
+    self.checkRangeNumbers(i_beg, i_end)
+
+  def checkRangeNumbers(self, i_beg, i_end):
+    count = tk.IntVar()
+    while True:
+      # TODO correct number pattern
+      i_beg = self.text.search('\d+\.?\d*', i_beg, stopindex=i_end, regexp=True, count=count)
+      if i_beg == '' or count.get() == 0: break
+      i_to = '%s + %d c' % (i_beg, count.get())
+      self.text.tag_add(TAG_NUM, i_beg, i_to)
+      i_beg = i_to
 
